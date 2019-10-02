@@ -1,11 +1,11 @@
+##Centos 7
+
 yum -y install git
 cd /root
 git clone https://github.com/angristan/openvpn-install.git
 
 cd openvpn-install/
-
 sed -i "s/setenv opt block-outside-dns/#setenv opt block-outside-dns/g" openvpn-install.sh
-
 
 SHARK=$(ip route get 8.8.8.8 | awk 'NR==1 {print $(NF-2)}')
 firewall-cmd --permanent --add-masquerade
@@ -18,12 +18,15 @@ firewall-cmd --reload
 wget https://raw.githubusercontent.com/adel-haouas/openvpn/master/openvpn-status -O /etc/openvpn/openvpn-status
 chmod +x /etc/openvpn/openvpn-status
 
-sed '1 s/^/management 127.0.0.1 5443\n/' /etc/openvpn/server.conf 
+sed -i '1 s/^/management 127.0.0.1 5443\n/' /etc/openvpn/server.conf 
+sed -i "s/^status .*$/status \/var\/log\/openvpn-status.log/g" /etc/openvpn/server.conf
+echo "log-append /var/log/openvpn.log" >> /etc/openvpn/server.conf
 
-status /var/log/openvpn-status.log
-log-append  /var/log/openvpn.log
 
-
+#Permit access to the openvpn server from its subnet
+GLOBAL_IP=`curl -4 icanhazip.com 2>/dev/null`
+echo "push \"route $GLOBAL_IP 255.255.255.255 net_gateway\"" >> /etc/openvpn/server.conf
 
 #Enable and start the openvpn service
-systemctl enable --now openvpn@server.service
+systemctl enable openvpn@server.service
+systemctl restart openvpn@server.service
