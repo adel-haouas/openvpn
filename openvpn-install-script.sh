@@ -15,6 +15,9 @@ firewall-cmd --reload
 firewall-cmd --add-service=https --permanent
 firewall-cmd --reload 
 
+##begin the openvpn installation
+./openvpn-install.sh
+
 wget https://raw.githubusercontent.com/adel-haouas/openvpn/master/openvpn-status -O /etc/openvpn/openvpn-status
 chmod +x /etc/openvpn/openvpn-status
 
