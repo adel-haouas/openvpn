@@ -25,7 +25,7 @@ chmod +x /etc/openvpn/openvpn-status
 sed -i '1 s/^/management 127.0.0.1 5443\n/' /etc/openvpn/server.conf 
 sed -i "s/^status .*$/status \/var\/log\/openvpn-status.log/g" /etc/openvpn/server.conf
 echo "log-append /var/log/openvpn.log" >> /etc/openvpn/server.conf
-
+rm -rfv /var/log/openvpn
 
 #Permit access to the openvpn server from its subnet
 GLOBAL_IP=`curl -4 icanhazip.com 2>/dev/null`
