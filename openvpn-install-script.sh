@@ -34,3 +34,9 @@ echo "push \"route $GLOBAL_IP 255.255.255.255 net_gateway\"" >> /etc/openvpn/ser
 #Enable and start the openvpn service
 systemctl enable openvpn@server.service
 systemctl restart openvpn@server.service
+
+
+##centos8
+##to resolve the error "/usr/bin/env: ‘python’: No such file or directory"
+yum install python2 -y
+alternatives --set python /usr/bin/python2
