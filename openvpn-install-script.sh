@@ -1,6 +1,7 @@
 ##Centos 7
 
 yum -y install git zip
+mkdir -pv /root/openvpn-clients/
 cd /root
 git clone https://github.com/angristan/openvpn-install.git
 
