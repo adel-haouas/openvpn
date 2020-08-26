@@ -15,6 +15,18 @@ firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING  -o $
 firewall-cmd --add-service=https --permanent
 firewall-cmd --reload 
 
+##to protect user profile by password
+#edit openvpn-install.sh file and add theses lines to the end of newClient() function
+        PaSS=$(openssl rand -base64 12)
+        echo $(date)" ## "$CLIENT" : "$PaSS >> /var/log/ovpn.bin
+        zip -P $PaSS /root/openvpn-clients/$CLIENT.ovpn.zip /root/$CLIENT.ovpn >/dev/null
+        rm -f /root/$CLIENT.ovpn
+
+        echo ""
+        echo "The configuration file has been written to /root/openvpn-clients/$CLIENT.ovpn.zip"
+        echo "Download the .ovpn.zip file and import it in your OpenVPN client."
+        echo "File is password protected"
+
 ##begin the openvpn installation
 ./openvpn-install.sh
 
@@ -33,7 +45,6 @@ echo "push \"route $GLOBAL_IP 255.255.255.255 net_gateway\"" >> /etc/openvpn/ser
 #Enable and start the openvpn service
 systemctl enable openvpn@server.service
 systemctl restart openvpn@server.service
-
 
 ##centos8
 ##to resolve the error "/usr/bin/env: ‘python’: No such file or directory"
