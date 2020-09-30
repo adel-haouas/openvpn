@@ -8,6 +8,9 @@ git clone https://github.com/angristan/openvpn-install.git
 cd openvpn-install/
 sed -i "s/setenv opt block-outside-dns/#setenv opt block-outside-dns/g" openvpn-install.sh
 
+##replace subnet 10.8.0/24 by 10.8.xyz/24 where xyz is the random number between 0 and 255
+RND_NUMBER=$(shuf -i0-255 -n1);sed -i "s/10.8.0/10.8.$RND_NUMBER/g" openvpn-install.sh
+
 SHARK=$(ip route get 8.8.8.8 | awk 'NR==1 {print $(NF-2)}')
 firewall-cmd --permanent --add-masquerade
 firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING  -o $SHARK -j MASQUERADE
