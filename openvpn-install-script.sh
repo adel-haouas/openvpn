@@ -12,10 +12,10 @@ sed -i "s/setenv opt block-outside-dns/#setenv opt block-outside-dns/g" openvpn-
 RND_NUMBER=$(shuf -i0-255 -n1);sed -i "s/10.8.0/10.8.$RND_NUMBER/g" openvpn-install.sh
 
 SHARK=$(ip route get 8.8.8.8 | awk 'NR==1 {print $(NF-2)}')
-firewall-cmd --permanent --add-masquerade
-firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING  -o $SHARK -j MASQUERADE
+firewall-cmd --permanent --add-masquerade 2>/dev/null
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING  -o $SHARK -j MASQUERADE 2>/dev/null
 
-firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=https --permanent 2>/dev/null
 firewall-cmd --reload 
 
 ##to protect user profile by password
@@ -44,6 +44,9 @@ rm -rfv /var/log/openvpn
 #Permit access to the openvpn server from its subnet
 GLOBAL_IP=`curl -4 icanhazip.com 2>/dev/null`
 echo "push \"route $GLOBAL_IP 255.255.255.255 net_gateway\"" >> /etc/openvpn/server.conf
+
+#Disable sending all IP network traffic originating on client machines to pass through the OpenVPN server
+sed -i 's/^push "redirect-gateway def1 bypass-dhcp"/#push "redirect-gateway def1 bypass-dhcp"/g' /etc/openvpn/server.conf 
 
 #Enable and start the openvpn service
 systemctl enable openvpn@server.service
