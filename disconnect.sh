@@ -14,23 +14,23 @@ TO="<someone@xyz.com>"
 time=$(echo $(date +"%c"))
 tmpFILE=$(mktemp)
 
-message=$(echo "<b>Connected Since:</b> $time<br><b>Real Address:</b> \
-$untrusted_ip<br><b>Virtual Address:</b> \
-$ifconfig_pool_remote_ip<br><b>Common \
-Name:</b> $common_name<br><br>")
-
 echo "Subject: OpenVPN DISCONNECT" >$tmpFILE
 echo "Content-Type: text/html" >>$tmpFILE
 echo "From: $FROMNAME<$FROM>" >>$tmpFILE
 echo "Date: `date -R`" >>$tmpFILE
 echo "" >>$tmpFILE
-echo "Client has disconnected from <b>OpenVPN</b>:<br>" >>$tmpFILE
+echo "Client has disconnected from OpenVPN:" >>$tmpFILE
 echo "" >>$tmpFILE
-echo "<br>$message" >>$tmpFILE
+
+echo "  Connected Since: $time" >>$tmpFILE
+echo "  Real Address: $untrusted_ip" >>$tmpFILE
+echo "  Virtual Address: $ifconfig_pool_remote_ip" >>$tmpFILE
+echo "  Common Name: $common_name" >>$tmpFILE
+
 echo "" >>$tmpFILE
-echo "---<br>" >>$tmpFILE
+echo "---" >>$tmpFILE
 echo "Your friendly OpenVPN server." >>$tmpFILE
-echo "<br>" >>$tmpFILE
+echo "" >>$tmpFILE
 
 mailx -s "OpenVPN DISCONNECT" -r $FROMNAME -v -S smtp=$SMTP  $TO < $tmpFILE
 
