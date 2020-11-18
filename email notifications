@@ -1,0 +1,17 @@
+##Enable sending email notifications when cliens connect or disconnect
+
+# Install necessary packages
+yum install mailx
+
+# Download scripts
+mkdir -pv /etc/openvpn/scripts/
+wget -nv -nc https://raw.githubusercontent.com/adel-haouas/openvpn/master/connect.sh -O /etc/openvpn/scripts/connect.sh
+wget -nv -nc https://raw.githubusercontent.com/adel-haouas/openvpn/master/disconnect.sh -O /etc/openvpn/scripts/disconnect.sh
+
+# Add thses lines to the end of file /etc/openvpn/server.conf
+script-security 2
+client-connect /etc/openvpn/scripts/connect.sh
+client-disconnect /etc/openvpn/scripts/disconnect.sh
+
+# Restard openvpn daemon
+systemctl restart openvpn-server@server.service
