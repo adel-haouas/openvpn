@@ -22,10 +22,10 @@ echo "" >>$tmpFILE
 echo "Client has disconnected from OpenVPN:" >>$tmpFILE
 echo "" >>$tmpFILE
 
-echo "  Connected Since: $time" >>$tmpFILE
-echo "  Real Address: $untrusted_ip" >>$tmpFILE
-echo "  Virtual Address: $ifconfig_pool_remote_ip" >>$tmpFILE
-echo "  Common Name: $common_name" >>$tmpFILE
+echo "  * Connected Since: $time" >>$tmpFILE
+echo "  * Real Address: $untrusted_ip" >>$tmpFILE
+echo "  * Virtual Address: $ifconfig_pool_remote_ip" >>$tmpFILE
+echo "  * Common Name: $common_name" >>$tmpFILE
 
 echo "" >>$tmpFILE
 echo "---" >>$tmpFILE
