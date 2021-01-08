@@ -49,8 +49,11 @@ echo "push \"route $GLOBAL_IP 255.255.255.255 net_gateway\"" >> /etc/openvpn/ser
 sed -i 's/^push "redirect-gateway def1 bypass-dhcp"/#push "redirect-gateway def1 bypass-dhcp"/g' /etc/openvpn/server.conf 
 
 #Enable and start the openvpn service
-systemctl enable openvpn@server.service
-systemctl restart openvpn@server.service
+systemctl enable --now openvpn-server@server.service 
+systemctl restart openvpn-server@server.service 
+
+#systemctl enable --now openvpn@server.service
+#systemctl restart openvpn@server.service
 
 ##centos8
 ##to resolve the error "/usr/bin/env: ‘python’: No such file or directory"
