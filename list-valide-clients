@@ -1,0 +1,4 @@
+for c in $(ls /etc/openvpn/easy-rsa/pki/issued/*.crt);do
+ echo -en $c" "
+ openssl x509 -enddate -noout -in $c
+done|column -t|sed "s/\/etc\/openvpn\/easy-rsa\/pki\/issued\///g"
