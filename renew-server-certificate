@@ -1,5 +1,8 @@
 Server_CERTIFICATE=$(ls /etc/openvpn/server_*.crt|awk -F"/" '{print $NF}')
 /etc/openvpn/easy-rsa/easyrsa renew $Server_CERTIFICATE nopass
 
+cp -p /etc/openvpn/easy-rsa/pki/issued/$Server_CERTIFICATE.crt /etc/openvpn/
+cp -p /etc/openvpn/easy-rsa/pki/private/$Server_CERTIFICATE.key /etc/openvpn/
+
 #restart openvpn service
 systemctl restart openvpn-server@server.service
