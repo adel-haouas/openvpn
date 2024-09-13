@@ -7,6 +7,7 @@ git clone https://github.com/angristan/openvpn-install.git
 
 cd openvpn-install/
 sed -i "s/setenv opt block-outside-dns/#setenv opt block-outside-dns/g" openvpn-install.sh
+sed -i "s/ip.seeip.org/icanhazip.com/g" openvpn-install.sh
 
 ##replace subnet 10.8.0/24 by 10.8.xyz/24 where xyz is the random number between 0 and 255
 RND_NUMBER=$(shuf -i0-255 -n1);sed -i "s/10.8.0/10.8.$RND_NUMBER/g" openvpn-install.sh
